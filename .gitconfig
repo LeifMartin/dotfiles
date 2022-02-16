@@ -22,7 +22,7 @@
     uncommit = reset HEAD^
     ltag = tag -l -n3
 	wdiff = diff --color-words
-	slog  = log --graph --topo-order --oneline
+	slog = log --oneline --topo-order --graph
     slog2 = log --graph --topo-order --abbrev-commit --date=relative --pretty=format:'%C(yellow)%h%Creset %s %Cgreen(%cr) %C(red)%d%Creset %C(bold blue)[%an]%Creset'
     targz = !git archive --prefix=`basename $PWD`/ master| gzip > `basename $PWD`.tar.gz
 
@@ -75,3 +75,16 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[diff "jupyternotebook"]
+	command = git-nbdiffdriver diff
+[merge "jupyternotebook"]
+	driver = git-nbmergedriver merge %O %A %B %L %P
+	name = jupyter notebook merge driver
+[difftool "nbdime"]
+	cmd = git-nbdifftool diff \"$LOCAL\" \"$REMOTE\" \"$BASE\"
+[difftool]
+	prompt = false
+[mergetool "nbdime"]
+	cmd = git-nbmergetool merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+[mergetool]
+	prompt = false
